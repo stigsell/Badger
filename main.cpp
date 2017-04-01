@@ -14,12 +14,12 @@ void showWelcomeMessage() {
     std::cout << "Happy You're Here" << std::endl;
 }
 
-void assignPlayerDetails() { //TODO move player to scope above this method
+void assignPlayerDetails() {
 
-    //Name TODO fix bug that doesn't accept names wiht multiple words (Ex: set name to "Nick Stigsell" and observe
+    //Name
     std::string playerName;
     std::cout << "What is your name? ";
-    std::cin >> playerName;
+    getline(std::cin, playerName);
     std::cout << "Welcome, " << playerName << "! We're glad you're playing" << std::endl; //remove
 
     //Age TODO try declaring playerAge without initializing to -1
