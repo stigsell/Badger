@@ -22,8 +22,8 @@ void assignPlayerDetails() {
     getline(std::cin, playerName);
     std::cout << "Welcome, " << playerName << "! We're glad you're playing" << std::endl; //remove
 
-    //Age TODO try declaring playerAge without initializing to -1
-    int playerAge = -1;
+    //Age
+    int playerAge;
     do {
         std::cout << "What is your age? ";
         std::cin >> playerAge;
