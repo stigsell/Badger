@@ -11,6 +11,7 @@ static const double BASE_STARTING_MONEY = 400;
 
 void showWelcomeMessage() {
     std::cout << "Welcome to the game!" << std::endl;
+    std::cout << "Happy You're Here" << std::endl;
 }
 
 void assignPlayerDetails() { //TODO move player to scope above this method
