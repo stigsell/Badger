@@ -18,9 +18,9 @@ private:
     std::string major;
     double balance;
     int attributes[4]; //[sleep, work, grades, social]
-    Location* currentLocation;
+    Location currentLocation;
 public:
-    Player(std::string name, int age, bool house, bool southeast, std::string major);
+    Player(std::string name, int age, bool house, bool southeast, std::string major, Location startingLoc);
     std::string getName();
     int getAge();
     bool getLivingSituation();
@@ -38,8 +38,8 @@ public:
     void setSocialAttribute(int social);
     int getSocialAttribute();
     void printStats();
-    Location* getCurrentLocation();
-    int setCurrentLocation(Location* loc);
+    Location getCurrentLocation();
+    int setCurrentLocation(Location loc);
 };
 
 

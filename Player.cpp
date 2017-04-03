@@ -5,14 +5,14 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(std::string name, int age, bool house, bool southeast, std::string major)
-             : name(name), age(age), playerLivesInHouse(house), playerLivesInSoutheast(southeast), major(major) {
+Player::Player(std::string name, int age, bool house, bool southeast, std::string major, Location startingLoc)
+             : name(name), age(age), playerLivesInHouse(house), playerLivesInSoutheast(southeast), major(major), currentLocation(startingLoc) {
     balance = 0.0;
     attributes[0] = 0;
     attributes[1] = 0;
     attributes[2] = 0;
     attributes[3] = 0;
-    currentLocation = NULL;
+
 }
 std::string Player::getName() {
     return name;
@@ -77,13 +77,13 @@ void Player::printStats() {
     std::cout << "Bank balance: $" << getBalance() << std::endl;
     std::cout << "Work location: Union South" << std::endl;
 }
-Location* Player::getCurrentLocation() {
+Location Player::getCurrentLocation() {
     return currentLocation;
 }
-int Player::setCurrentLocation(Location* loc) {
-    std::vector<Location> adjacentToProposedMove = loc->getAdjacentLocations();
+int Player::setCurrentLocation(Location loc) {
+    std::vector<Location> adjacentToProposedMove = currentLocation.getAdjacentLocations();
     for(auto l : adjacentToProposedMove) {
-        if(!l.getName().compare(loc->getName())) {
+        if(!l.getDisplayName().compare(loc.getDisplayName())) {
             currentLocation = loc;
             return 0;
         }

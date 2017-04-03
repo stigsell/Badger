@@ -4,13 +4,16 @@
 
 #include <iostream>
 #include "Location.h"
-Location::Location(std::string name, std::vector<std::string> allowable)
-            : name(name),  allowableActivities(allowable) {
+Location::Location(std::string dName, std::string sName, std::vector<std::string> allowable)
+            : displayName(dName), shortName(sName), allowableActivities(allowable) {
 
 }
 
-std::string Location::getName() {
-    return name;
+std::string Location::getDisplayName(){
+    return displayName;
+}
+std::string Location::getShortName(){
+    return shortName;
 }
 std::vector<std::string> Location::getAllowableActivities() {
     return allowableActivities;

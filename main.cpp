@@ -105,7 +105,7 @@ void assignPlayerDetails() {
     std::cout << "You work as a cook at Union South. Whenever you have work you need to go to Union South" << std::endl;
 
     //Create Player object
-    player = new Player(playerName, playerAge, playerLivesInHouse, playerLivesInSoutheast, playerMajor);
+    player = new Player(playerName, playerAge, playerLivesInHouse, playerLivesInSoutheast, playerMajor, campus->getLocation("union south"));
 }
 
 void assignPlayerAttributes() {
@@ -196,19 +196,19 @@ void setUpLocationsGraph() {
     std::cout << "Setting up game locations..." << std::endl;
     campus = new Graph("UW-Madison"); //create graph
     //create locations
-    Location lakeshore("Lakeshore", {});
-    Location eHall("Engineering Hall", {});
-    Location crHousing("Housing Near Camp Randall", {});
-    Location cRandall("Camp Randall", {});
-    Location uSouth("Union South", {});
-    Location bascom("Bascom Hill", {});
-    Location collegeLib("College Library", {});
-    Location csBuilding("CS Building", {});
-    Location grainger("Grainger Hall", {});
-    Location stateSt("State Street", {});
-    Location theHub("The Hub", {});
-    Location dons("Gordon's Dining Hall", {});
-    Location mifflin("Mifflin St.", {});
+    Location lakeshore("Lakeshore", "lakeshore", {});
+    Location eHall("Engineering Hall", "engineering hall", {});
+    Location crHousing("Housing Near Camp Randall", "housing near camp randall", {});
+    Location cRandall("Camp Randall", "camp randall", {});
+    Location uSouth("Union South", "union south", {});
+    Location bascom("Bascom Hill", "bascom hill", {});
+    Location collegeLib("College Library", "college library", {});
+    Location csBuilding("CS Building", "cs building", {});
+    Location grainger("Grainger Hall", "grainger hall", {});
+    Location stateSt("State Street", "state street", {});
+    Location theHub("The Hub", "the hub", {});
+    Location dons("Gordon's Dining Hall", "gordon's dining hall", {});
+    Location mifflin("Mifflin St.", "mifflin st.", {});
     //add edges
     //lakeshore
     lakeshore.addEdge(eHall);
@@ -281,16 +281,16 @@ void setUpLocationsGraph() {
 
     //print all locations and their neighbors
     for(auto location : campus->getAllLocations()) {
-        std::cout << location.getName() << "--> " << "\t";
+        std::cout << location.getDisplayName() << "--> " << "\t";
         std::vector<Location> neighbors = location.getAdjacentLocations();
         for(auto n : neighbors) {
-            std::cout << n.getName() << " , "; //TODO remove end comma (or come up with better way to display graph)
+            std::cout << n.getDisplayName() << " , "; //TODO remove end comma (or come up with better way to display graph)
         }
         std::cout << std::endl;
     }
     std::cout << std::endl;
-    Location* loca = campus->getLocation("Union South");
-    player->setCurrentLocation(loca);
+   // Location loca = campus->getLocation("Union South");
+    //player->setCurrentLocation(loca);
 
 }
 
@@ -307,21 +307,27 @@ void processAdvanceCommand() {
 }
 
 void processNearmeCommand() {
-    std::cout << "You are at: " << player->getCurrentLocation()->getName() << std::endl;
+    std::cout << "You are at: " << player->getCurrentLocation().getDisplayName() << std::endl;
     std::cout << "From here, you can move to: " << std::endl;
-    std::vector<Location> nearby = player->getCurrentLocation()->getAdjacentLocations();
+    std::vector<Location> nearby = player->getCurrentLocation().getAdjacentLocations();
     for(auto l : nearby) {
-        std::cout << "\t" << l.getName() << std::endl;
+        std::cout << "\t" << l.getDisplayName() << std::endl;
     }
 }
 
 void processMoveCommand(std::string token) {
-    Location* loc = campus->getLocation(token);
-    if(loc != NULL) {
-        player->setCurrentLocation(loc);
-    } else {
-        std::cout << "Error: that location is not accessible from " << player->getCurrentLocation() << std::endl;
+    Location loc = campus->getLocation(token);
+
+    player->setCurrentLocation(loc);
+
+    std::cout << "Welcome to " << player->getCurrentLocation().getDisplayName() << std::endl;
+    std::cout << "From here, you can move to: " << std::endl;
+    std::vector<Location> nearby = player->getCurrentLocation().getAdjacentLocations();
+    for(auto l : nearby) {
+        std::cout << "\t" << l.getDisplayName() << std::endl;
     }
+    //    std::cout << "Error: that location is not accessible from " << player->getCurrentLocation() << std::endl;
+    //TODO better error handling. What happens when user types in wrong location?
 
 }
 
@@ -390,8 +396,8 @@ void initializePlayer() {
 }
 
 int main() {
-    initializePlayer();
     setUpLocationsGraph();
+    initializePlayer();
     processUserCommands();
     return 0;
 }

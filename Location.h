@@ -11,12 +11,14 @@
 
 class Location {
 private:
-    std::string name;
+    std::string displayName;
+    std::string shortName;
     std::vector<std::string> allowableActivities;
     std::vector<Location> adjacentLocations;
 public:
-    Location(std::string name, std::vector<std::string> activities);
-    std::string getName();
+    Location(std::string dName, std::string sName, std::vector<std::string> activities);
+    std::string getDisplayName();
+    std::string getShortName();
     std::vector<std::string> getAllowableActivities();
     bool isAllowed(std::string);
     std::vector<Location> getAdjacentLocations();

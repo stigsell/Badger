@@ -15,11 +15,12 @@ bool Graph::addVertex(Location l) {
 std::vector<Location> Graph::getAllLocations() {
     return locations;
 }
-Location* Graph::getLocation(std::string name) {
+Location Graph::getLocation(std::string name) {
     for(auto l : locations) {
-        if(!l.getName().compare(name)) {
-            return &l;
+        if(!l.getShortName().compare(name)) {
+            return l;
         }
     }
-    return NULL;
+    //no location found
+    throw "No location found"; //TODO more advanced error handling
 }
