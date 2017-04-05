@@ -45,26 +45,26 @@ int Player::subtractMoney(double money) {
     }
 
 }
-void Player::setSleepAttribute(int sleep) {
-    attributes[0] = sleep;
+void Player::changeSleepAttribute(int sleep) {
+    attributes[0] += sleep;
 }
 int Player::getSleepAttribute() {
     return attributes[0];
 }
-void Player::setWorkAttribute(int work) {
-    attributes[1] = work;
+void Player::changeWorkAttribute(int work) {
+    attributes[1] += work;
 }
 int Player::getWorkAttribute() {
     return attributes[1];
 }
-void Player::setGradesAttribute(int grades) {
-    attributes[2] = grades;
+void Player::changeGradesAttribute(int grades) {
+    attributes[2] += grades;
 }
 int Player::getGradesAttribute() {
     return attributes[2];
 }
-void Player::setSocialAttribute(int social) {
-    attributes[3] = social;
+void Player::changeSocialAttribute(int social) {
+    attributes[3] += social;
 }
 int Player::getSocialAttribute() {
     return attributes[3];

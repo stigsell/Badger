@@ -29,13 +29,13 @@ public:
     double getBalance();
     void addMoney(double money);
     int subtractMoney(double money);
-    void setSleepAttribute(int sleep);
+    void changeSleepAttribute(int sleep);
     int getSleepAttribute();
-    void setWorkAttribute(int work);
+    void changeWorkAttribute(int work);
     int getWorkAttribute();
-    void setGradesAttribute(int grades);
+    void changeGradesAttribute(int grades);
     int getGradesAttribute();
-    void setSocialAttribute(int social);
+    void changeSocialAttribute(int social);
     int getSocialAttribute();
     void printStats();
     Location getCurrentLocation();
