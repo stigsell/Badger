@@ -22,6 +22,14 @@ bool Location::isAllowed(std::string) {
     return true;
     //TODO implement this function
 }
+bool Location::isAdjacentTo(Location loc) {
+    for(auto l : adjacentLocations) {
+        if(!l.getDisplayName().compare(loc.getDisplayName())) {
+            return true;
+        }
+    }
+    return false;
+}
 std::vector<Location> Location::getAdjacentLocations() {
     return adjacentLocations;
 }

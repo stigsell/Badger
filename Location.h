@@ -21,6 +21,7 @@ public:
     std::string getShortName();
     std::vector<std::string> getAllowableActivities();
     bool isAllowed(std::string);
+    bool isAdjacentTo(Location loc);
     std::vector<Location> getAdjacentLocations();
     bool addEdge(Location &loc);
 };

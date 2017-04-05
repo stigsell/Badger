@@ -316,19 +316,22 @@ void processNearmeCommand() {
 }
 
 void processMoveCommand(std::string token) {
-    Location loc = campus->getLocation(token);
-
-    player->setCurrentLocation(loc);
-
-    std::cout << "Welcome to " << player->getCurrentLocation().getDisplayName() << std::endl;
-    std::cout << "From here, you can move to: " << std::endl;
-    std::vector<Location> nearby = player->getCurrentLocation().getAdjacentLocations();
-    for(auto l : nearby) {
-        std::cout << "\t" << l.getDisplayName() << std::endl;
+    if(campus->isValidLocation(token)) {
+        Location loc = campus->getLocation(token);
+        if(campus->isValidMove(player->getCurrentLocation(), loc)) {
+            player->setCurrentLocation(loc);
+            std::cout << "Welcome to " << player->getCurrentLocation().getDisplayName() << std::endl;
+            std::cout << "From here, you can move to: " << std::endl;
+            std::vector<Location> nearby = player->getCurrentLocation().getAdjacentLocations();
+            for(auto l : nearby) {
+                std::cout << "\t" << l.getDisplayName() << std::endl;
+            }
+        } else {
+            std::cout << "Error: " << loc.getDisplayName() << " is not accessible from " << player->getCurrentLocation().getDisplayName() << std::endl;
+        }
+    } else {
+        std::cout << "Error: not a valid location. Make sure you typed it exactly as it appears on your screen " << std::endl;
     }
-    //    std::cout << "Error: that location is not accessible from " << player->getCurrentLocation() << std::endl;
-    //TODO better error handling. What happens when user types in wrong location?
-
 }
 
 void processTaskCommand(std::string token) {

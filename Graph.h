@@ -16,7 +16,9 @@ private:
     std::vector<Location> locations;
 public:
     Graph(std::string campusName); //TODO remove the need for campusName. Should just be able to call a default constructor
-    bool addVertex(Location l);
+    void addVertex(Location l);
+    bool isValidLocation(std::string locationName);
+    bool isValidMove(Location loc1, Location loc2);
     std::vector<Location> getAllLocations();
     Location getLocation(std::string name);
 };
