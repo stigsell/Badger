@@ -171,10 +171,10 @@ void assignPlayerAttributes() {
     std::cout << "Grades: " << grades << std::endl;
     std::cout << "Social life: " << social << std::endl;
 
-    player->setSleepAttribute(sleep);
-    player->setWorkAttribute(work);
-    player->setGradesAttribute(grades);
-    player->setSocialAttribute(social);
+    player->changeSleepAttribute(sleep);
+    player->changeWorkAttribute(work);
+    player->changeGradesAttribute(grades);
+    player->changeSocialAttribute(social);
 
 }
 
