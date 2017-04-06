@@ -6,12 +6,17 @@
 
 Player *player;
 Graph *campus;
+Schedule *mySchedule;
 static const int TOTAL_POINTS = 20;
 static const double BASE_STARTING_MONEY = 400;
 
 void showWelcomeMessage() {
     std::cout << "Welcome to the game!" << std::endl;
-    std::cout << "Happy You're Here" << std::endl;
+    std::cout << "Happy you're here!" << std::endl;
+}
+
+void createSchedule() {
+    Schedule mySchedule = new Schedule();
 }
 
 void assignPlayerDetails() {
@@ -299,7 +304,9 @@ void processStatsCommand() {
 }
 
 void processNowCommand() {
-
+    std::cout << mySchedule->getCurrentDay() << std::endl;
+    std::cout << mySchedule->getCurrentTime() << std::endl;
+    std::cout << player->getCurrentLocation().getDisplayName() << std::endl;
 }
 
 void processAdvanceCommand() {
@@ -335,6 +342,9 @@ void processMoveCommand(std::string token) {
 }
 
 void processTaskCommand(std::string token) {
+    if(token.compare("")) {
+        std::cout << mySchedule->getTask() << std::endl;
+    }
 
 }
 
@@ -401,6 +411,7 @@ void initializePlayer() {
 int main() {
     setUpLocationsGraph();
     initializePlayer();
+    createSchedule();
     processUserCommands();
     return 0;
 }
