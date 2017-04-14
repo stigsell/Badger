@@ -18,8 +18,13 @@ std::string Location::getShortName(){
 std::vector<std::string> Location::getAllowableActivities() {
     return allowableActivities;
 }
-bool Location::isAllowed(std::string) {
-    return true;
+bool Location::isAllowed(std::string activity) {
+    for(auto a : allowableActivities) {
+        if(!activity.compare(a)) {
+            return true;
+        }
+    }
+    return false;
     //TODO implement this function
 }
 bool Location::isAdjacentTo(Location loc) {

@@ -76,6 +76,17 @@ void Player::printStats() {
     std::cout << "Social: " << getSocialAttribute() << std::endl;
     std::cout << "Bank balance: $" << getBalance() << std::endl;
     std::cout << "Work location: Union South" << std::endl;
+    std::string classLocation;
+    if(!major.compare("business")) {
+        classLocation = "Grainger Hall";
+    } else if (!major.compare("science")) {
+        classLocation = "Bascom Hill";
+    } else if (!major.compare("CS")) {
+        classLocation = "CS Building";
+    } else { //engineering
+        classLocation = "Engineering Hall";
+    }
+    std::cout << "Class location: " << classLocation << std::endl;
 }
 Location Player::getCurrentLocation() {
     return currentLocation;

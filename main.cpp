@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Location.h"
 #include "Graph.h"
+#include "Schedule.h"
 
 Player *player;
 Graph *campus;
@@ -16,7 +17,9 @@ void showWelcomeMessage() {
 }
 
 void createSchedule() {
-    Schedule mySchedule = new Schedule();
+    mySchedule = new Schedule("A good schedule");
+    mySchedule->createSchedule(player->getGradesAttribute(), player->getSleepAttribute(), player->getWorkAttribute(), player->getSocialAttribute());
+    mySchedule->printSchedule();
 }
 
 void assignPlayerDetails() {
@@ -170,12 +173,6 @@ void assignPlayerAttributes() {
     int social = TOTAL_POINTS - pointsUsed;
     std::cout << "You have " << TOTAL_POINTS - pointsUsed << " points left. They are all automatically allocated to social life." << std::endl;
 
-    std::cout << "Here are your attributes: " << std::endl;
-    std::cout << "Sleep: " << sleep << std::endl;
-    std::cout << "Work: " << work << std::endl;
-    std::cout << "Grades: " << grades << std::endl;
-    std::cout << "Social life: " << social << std::endl;
-
     player->changeSleepAttribute(sleep);
     player->changeWorkAttribute(work);
     player->changeGradesAttribute(grades);
@@ -201,19 +198,19 @@ void setUpLocationsGraph() {
     std::cout << "Setting up game locations..." << std::endl;
     campus = new Graph("UW-Madison"); //create graph
     //create locations
-    Location lakeshore("Lakeshore", "lakeshore", {});
-    Location eHall("Engineering Hall", "engineering hall", {});
-    Location crHousing("Housing Near Camp Randall", "housing near camp randall", {});
-    Location cRandall("Camp Randall", "camp randall", {});
-    Location uSouth("Union South", "union south", {});
-    Location bascom("Bascom Hill", "bascom hill", {});
-    Location collegeLib("College Library", "college library", {});
-    Location csBuilding("CS Building", "cs building", {});
-    Location grainger("Grainger Hall", "grainger hall", {});
-    Location stateSt("State Street", "state street", {});
-    Location theHub("The Hub", "the hub", {});
-    Location dons("Gordon's Dining Hall", "gordon's dining hall", {});
-    Location mifflin("Mifflin St.", "mifflin st.", {});
+    Location lakeshore("Lakeshore", "lakeshore", {"study", "relax", "socialize", "go out"});
+    Location eHall("Engineering Hall", "engineering hall", {"study"});
+    Location crHousing("Housing Near Camp Randall", "housing near camp randall", {"study", "relax", "socialize"});
+    Location cRandall("Camp Randall", "camp randall", {"socialize", "go out"});
+    Location uSouth("Union South", "union south", {"study", "socialize"});
+    Location bascom("Bascom Hill", "bascom hill", {"study"});
+    Location collegeLib("College Library", "college library", {"study"});
+    Location csBuilding("CS Building", "cs building", {"study"});
+    Location grainger("Grainger Hall", "grainger hall", {"study"});
+    Location stateSt("State Street", "state street", {"socialize", "go out"});
+    Location theHub("The Hub", "the hub", {"study", "relax", "socialize", "go out"});
+    Location dons("Gordon's Dining Hall", "gordon's dining hall", {"socialize"});
+    Location mifflin("Mifflin St.", "mifflin st.", {"study", "relax", "socialize", "go out"});
     //add edges
     //lakeshore
     lakeshore.addEdge(eHall);
@@ -304,14 +301,10 @@ void processStatsCommand() {
 }
 
 void processNowCommand() {
-    std::cout << mySchedule->getCurrentDay() << std::endl;
-    std::cout << mySchedule->getCurrentTime() << std::endl;
-    std::cout << player->getCurrentLocation().getDisplayName() << std::endl;
+    mySchedule->getCurrentDay();
+    mySchedule->getCurrentTime();
 }
 
-void processAdvanceCommand() {
-
-}
 
 void processNearmeCommand() {
     std::cout << "You are at: " << player->getCurrentLocation().getDisplayName() << std::endl;
@@ -342,9 +335,55 @@ void processMoveCommand(std::string token) {
 }
 
 void processTaskCommand(std::string token) {
-    if(token.compare("")) {
-        std::cout << mySchedule->getTask() << std::endl;
+    std::string classLocation;
+    if(!player->getMajor().compare("business")) {
+        classLocation = "Grainger Hall";
+    } else if (!player->getMajor().compare("science")) {
+        classLocation = "Bascom Hill";
+    } else if (!player->getMajor().compare("CS")) {
+        classLocation = "CS Building";
+    } else { //engineering
+        classLocation = "Engineering Hall";
     }
+
+    if(token.size() == 0) {
+        std::cout << "You have: ";
+        if(!mySchedule->getCurrentEvent().compare("")) {
+            std::cout << "Open";
+        } else {
+            std::cout << mySchedule->getCurrentEvent();
+        }
+        std::cout << std::endl;
+    }
+    if((!mySchedule->getTask().compare("Class"))  && (!token.compare("class"))) {
+        if(!player->getCurrentLocation().getDisplayName().compare(classLocation)) {
+            std::cout << "Thanks for coming to class!" << std::endl;
+            mySchedule->advanceTime();
+            return; //exit function
+        } else {
+            std::cout << "You're not in your class location. Move to " << classLocation << std::endl;
+        }
+    }
+
+    if((!mySchedule->getTask().compare("Work"))  && (!token.compare("work"))) {
+        if(!player->getCurrentLocation().getDisplayName().compare("Union South")) {
+            std::cout << "Thanks for coming to work!" << std::endl;
+            mySchedule->advanceTime();
+            return; //exit function
+        } else {
+            std::cout << "You're not in your work location. Move to Union South" << std::endl;
+        }
+    }
+
+    if((!mySchedule->getTask().compare("")) && token.compare("")) {
+        if((!token.compare("study")) && player->getCurrentLocation().isAllowed(token)) {
+            std::cout << "You chose to " << token << std::endl;
+            mySchedule->advanceTime();
+        } else {
+            std::cout << "Error: activity doesn't exist or isn't allowed at this location" << std::endl;
+        }
+    }
+
 
 }
 
@@ -379,8 +418,6 @@ static void processUserCommands() {
             processStatsCommand();
         } else if (!command.compare("now")) {
             processNowCommand();
-        } else if (!command.compare("advance")) {
-            processAdvanceCommand();
         } else if (!command.compare("nearme")) {
             processNearmeCommand();
         } else if (!command.compare("move")) {
@@ -411,6 +448,7 @@ void initializePlayer() {
 int main() {
     setUpLocationsGraph();
     initializePlayer();
+    player->printStats();
     createSchedule();
     processUserCommands();
     return 0;
