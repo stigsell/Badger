@@ -88,43 +88,10 @@ void Schedule::freeTime() {
 
 void Schedule::getCurrentDay() {
     std::cout << "Current day: " << days[day] << std::endl;
-
-//    switch (day) {
-//        case 0: std::cout << "Monday" << std::endl;
-//            break;
-//        case 1: std::cout << "Tuesday" << std::endl;
-//            break;
-//        case 2: std::cout << "Wednesday"<< std::endl;
-//            break;
-//        case 3: std::cout << "Thursday"<< std::endl;
-//            break;
-//        case 4: std::cout << "Friday"<< std::endl;
-//            break;
-//        case 5: std::cout << "Saturday"<< std::endl;
-//            break;
-//        case 6: std::cout << "Sunday"<< std::endl;
-//            break;
-//        default: std::cout << "ERROR: Invalid day" << std::endl;
-//            break;
-//    }
 }
 
 void Schedule::getCurrentTime() {
     std::cout << "Current time: " << times[time] << std::endl;
-//    switch (time) {
-//        case 0: std::cout << "Morning" << std::endl;
-//            break;
-//        case 1: std::cout << "Early Afternoon"<< std::endl;
-//            break;
-//        case 2: std::cout << "Late Afternoon"<< std::endl;
-//            break;
-//        case 3: std::cout << "Dinner"<< std::endl;
-//            break;
-//        case 4: std::cout << "Night"<< std::endl;
-//            break;
-//        default: std::cout << "ERROR: Invalid time" << std::endl;
-//            break;
-//    }
 }
 
 std::string Schedule::getTask() {

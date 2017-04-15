@@ -4,6 +4,7 @@
 #include "Location.h"
 #include "Graph.h"
 #include "Schedule.h"
+#include<limits>
 
 Player *player;
 Graph *campus;
@@ -13,7 +14,6 @@ static const double BASE_STARTING_MONEY = 400;
 
 void showWelcomeMessage() {
     std::cout << "Welcome to the game!" << std::endl;
-    std::cout << "Happy you're here!" << std::endl;
 }
 
 void createSchedule() {
@@ -34,7 +34,11 @@ void assignPlayerDetails() {
     int playerAge;
     do {
         std::cout << "What is your age? ";
-        std::cin >> playerAge;
+        while(!(std::cin >> playerAge)) {
+            std::cout << "Incorrect input. Please try again. ";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+        }
         if(playerAge < 18) {
             std::cout << "Error: Age must be greater than or equal to 18" << std::endl;
         }
@@ -89,7 +93,11 @@ void assignPlayerDetails() {
     do {
         int decision;
         std::cout << "What's your major? Your choices are: business, science, CS, or engineering.  Enter '1' for business, '2' for science, '3' for CS, '4' for engineering" << std::endl;
-        std::cin >> decision;
+        while(!(std::cin >> decision)) {
+            std::cout << "Incorrect input. Please try again. ";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+        }
         if(decision == 1) {
             playerMajor = "business";
             validInput = true;
@@ -127,7 +135,11 @@ void assignPlayerAttributes() {
     int sleep;
     do {
         std::cout << "How many points would you like to allocate to sleep? You have " << TOTAL_POINTS - pointsUsed << " points left. " << std::endl;
-        std::cin >> sleep;
+        while(!(std::cin >> sleep)) {
+            std::cout << "Incorrect input. Please try again. ";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+        }
         if(sleep > TOTAL_POINTS - pointsUsed) {
             std::cout << "Error: You don't have that many points available" << std::endl;
         }
@@ -143,7 +155,11 @@ void assignPlayerAttributes() {
     int work;
     do {
         std::cout << "How many points would you like to allocate to work? You have " << TOTAL_POINTS - pointsUsed << " points left. " << std::endl;
-        std::cin >> work;
+        while(!(std::cin >> work)) {
+            std::cout << "Incorrect input. Please try again. ";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+        }
         if(work > TOTAL_POINTS - pointsUsed) {
             std::cout << "Error: You don't have that many points available" << std::endl;
         }
@@ -158,7 +174,11 @@ void assignPlayerAttributes() {
     int grades;
     do {
         std::cout << "How many points would you like to allocate to grades? You have " << TOTAL_POINTS - pointsUsed << " points left. " << std::endl;
-        std::cin >> grades;
+        while(!(std::cin >> grades)) {
+            std::cout << "Incorrect input. Please try again. ";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+        }
         if(grades > TOTAL_POINTS - pointsUsed) {
             std::cout << "Error: You don't have that many points available" << std::endl;
         }
@@ -181,7 +201,6 @@ void assignPlayerAttributes() {
 }
 
 void assignPlayerMoney() {
-    std::cout << "Player money" << std::endl;
     srand(time(0)); //sets random seed
     double money = rand() % 100 + 1;
     money += BASE_STARTING_MONEY;
@@ -195,7 +214,6 @@ void assignPlayerMoney() {
 }
 
 void setUpLocationsGraph() {
-    std::cout << "Setting up game locations..." << std::endl;
     campus = new Graph("UW-Madison"); //create graph
     //create locations
     Location lakeshore("Lakeshore", "lakeshore", {"study", "relax", "socialize", "go out"});
@@ -282,18 +300,15 @@ void setUpLocationsGraph() {
     campus->addVertex(mifflin);
 
     //print all locations and their neighbors
-    for(auto location : campus->getAllLocations()) {
-        std::cout << location.getDisplayName() << "--> " << "\t";
-        std::vector<Location> neighbors = location.getAdjacentLocations();
-        for(auto n : neighbors) {
-            std::cout << n.getDisplayName() << " , "; //TODO remove end comma (or come up with better way to display graph)
-        }
-        std::cout << std::endl;
-    }
+//    for(auto location : campus->getAllLocations()) {
+//        std::cout << location.getDisplayName() << "--> " << "\t";
+//        std::vector<Location> neighbors = location.getAdjacentLocations();
+//        for(auto n : neighbors) {
+//            std::cout << n.getDisplayName() << " , "; //TODO remove end comma (or come up with better way to display graph)
+//        }
+//        std::cout << std::endl;
+//    }
     std::cout << std::endl;
-   // Location loca = campus->getLocation("Union South");
-    //player->setCurrentLocation(loca);
-
 }
 
 void processStatsCommand() {
