@@ -75,6 +75,7 @@ void Player::printStats() {
     std::cout << "Grades: " << getGradesAttribute() << std::endl;
     std::cout << "Social: " << getSocialAttribute() << std::endl;
     std::cout << "Bank balance: $" << getBalance() << std::endl;
+    std::cout << "Major: " << major << std::endl;
     std::cout << "Work location: Union South" << std::endl;
     std::string classLocation;
     if(!major.compare("business")) {

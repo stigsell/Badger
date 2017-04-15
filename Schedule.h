@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 class Schedule {
 private:
@@ -43,18 +44,18 @@ private:
     };
     int day;
     int time;
+    std::map<int, std::string> days;
+    std::map<int, std::string> times;
 public:
     Schedule(std::string name);
     void createSchedule(int grades, int sleep, int work, int social);
     void printSchedule();
-    std::string getCurrentEvent();
     void createConflicts();
     void freeTime();
     void getCurrentDay();
     void getCurrentTime();
     std::string getTask();
     void advanceTime();
-    std::string scheduleAccess(int r, int c);
 };
 
 

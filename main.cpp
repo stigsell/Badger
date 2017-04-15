@@ -298,6 +298,7 @@ void setUpLocationsGraph() {
 
 void processStatsCommand() {
     player->printStats();
+    mySchedule->printSchedule();
 }
 
 void processNowCommand() {
@@ -348,10 +349,10 @@ void processTaskCommand(std::string token) {
 
     if(token.size() == 0) {
         std::cout << "You have: ";
-        if(!mySchedule->getCurrentEvent().compare("")) {
+        if(!mySchedule->getTask().compare("")) {
             std::cout << "Open";
         } else {
-            std::cout << mySchedule->getCurrentEvent();
+            std::cout << mySchedule->getTask();
         }
         std::cout << std::endl;
     }
@@ -388,7 +389,15 @@ void processTaskCommand(std::string token) {
 }
 
 void processHelpCommand() {
-
+    std::cout << std::endl;
+    std::cout << "stats - Prints user's current attributes, major, bank balance, work location, class location, and schedule" << std::endl;
+    std::cout << "now - Prints current time and day" << std::endl;
+    std::cout << "nearme - Prints current location and the adjacent locations that are directly accessible from the current location" << std::endl;
+    std::cout << "move <location> - Moves the user to the specified location" << std::endl;
+    std::cout << "task - Prints the current task that the user must do to advance. If the user has no tasks, it prints \"Open\" " << std::endl;
+    std::cout << "task <activity> - Completes the specified task and advances time" << std::endl;
+    std::cout << "quit - Quits the game" << std::endl;
+    std::cout << std::endl;
 }
 
 void processQuitCommand() {
