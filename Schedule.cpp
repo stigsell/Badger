@@ -17,6 +17,12 @@ Schedule::Schedule(std::string scheduleName) : name(scheduleName) {
     times[2] = "Late Afternoon";
     times[3] = "Dinner";
     times[4] = "Night";
+
+    allowableActivities[0] = {"study", "relax"};
+    allowableActivities[1] = {"study", "relax"};
+    allowableActivities[2] = {"study", "relax", "socialize"};
+    allowableActivities[3] = {"eat at home", "eat out with friends"};
+    allowableActivities[4] = {"study", "go out", "stay in",};
 }
 
 void Schedule::createSchedule(int grades, int sleep, int work, int social) {
@@ -109,4 +115,16 @@ void Schedule::advanceTime() {
         time++;
     }
     getCurrentTime();
+}
+std::vector<std::string> Schedule::getAllowableActivitiesAtCurrentTime() {
+    return allowableActivities[time];
+}
+bool Schedule::isAllowed(std::string activity) {
+    for(auto a : allowableActivities[time]) {
+        if(!activity.compare(a)) {
+            return true;
+        }
+    }
+    return false;
+    //TODO implement this function
 }

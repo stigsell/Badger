@@ -11,6 +11,7 @@ Graph *campus;
 Schedule *mySchedule;
 static const int TOTAL_POINTS = 20;
 static const double BASE_STARTING_MONEY = 400;
+std::map<std::string, std::vector<std::string>> activitiesActions;
 
 void showWelcomeMessage() {
     std::cout << "Welcome to the game!" << std::endl;
@@ -216,19 +217,19 @@ void assignPlayerMoney() {
 void setUpLocationsGraph() {
     campus = new Graph("UW-Madison"); //create graph
     //create locations
-    Location lakeshore("Lakeshore", "lakeshore", {"study", "relax", "socialize", "go out"});
+    Location lakeshore("Lakeshore", "lakeshore", {"study", "relax", "socialize", "go out", "eat at home"});
     Location eHall("Engineering Hall", "engineering hall", {"study"});
-    Location crHousing("Housing Near Camp Randall", "housing near camp randall", {"study", "relax", "socialize"});
+    Location crHousing("Housing Near Camp Randall", "housing near camp randall", {"study", "relax", "socialize", "eat at home"});
     Location cRandall("Camp Randall", "camp randall", {"socialize", "go out"});
-    Location uSouth("Union South", "union south", {"study", "socialize"});
+    Location uSouth("Union South", "union south", {"study", "socialize", "eat out with friends"});
     Location bascom("Bascom Hill", "bascom hill", {"study"});
     Location collegeLib("College Library", "college library", {"study"});
     Location csBuilding("CS Building", "cs building", {"study"});
     Location grainger("Grainger Hall", "grainger hall", {"study"});
-    Location stateSt("State Street", "state street", {"socialize", "go out"});
-    Location theHub("The Hub", "the hub", {"study", "relax", "socialize", "go out"});
-    Location dons("Gordon's Dining Hall", "gordon's dining hall", {"socialize"});
-    Location mifflin("Mifflin St.", "mifflin st.", {"study", "relax", "socialize", "go out"});
+    Location stateSt("State Street", "state street", {"socialize", "go out", "eat out with friends"});
+    Location theHub("The Hub", "the hub", {"study", "relax", "socialize", "go out", "eat at home"});
+    Location dons("Gordon's Dining Hall", "gordon's dining hall", {"socialize", "eat out with friends"});
+    Location mifflin("Mifflin St.", "mifflin st.", {"study", "relax", "socialize", "go out", "eat at home"});
     //add edges
     //lakeshore
     lakeshore.addEdge(eHall);
@@ -299,6 +300,14 @@ void setUpLocationsGraph() {
     campus->addVertex(dons);
     campus->addVertex(mifflin);
 
+    activitiesActions["study"] = {"Lakeshore", "Engineering Hall", "Housing Near Camp Randall", "Union South", "Bascom Hill", "College Library", "CS Building", "Grainger Hall", "The Hub", "Mifflin St."};
+    activitiesActions["relax"] = {"Lakeshore", "Housing Near Camp Randall", "The Hub", "Mifflin St."};
+    activitiesActions["socialize"] = {"Lakeshore", "Housing Near Camp Randall", "Camp Randall", "Union South", "State Street", "The Hub", "Gordon's Dining Hall", "Mifflin St."};
+    activitiesActions["go out"] = {"Lakeshore", "Housing Near Camp Randall", "State Street", "The Hub", "Mifflin St."};
+    activitiesActions["eat at home"] = {"Lakeshore", "Housing Near Camp Randall", "The Hub", "Mifflin St."};
+    activitiesActions["eat out with friends"] = {"Union South", "State Street", "Gordon's Dining Hall"};
+
+
     //print all locations and their neighbors
 //    for(auto location : campus->getAllLocations()) {
 //        std::cout << location.getDisplayName() << "--> " << "\t";
@@ -308,7 +317,6 @@ void setUpLocationsGraph() {
 //        }
 //        std::cout << std::endl;
 //    }
-    std::cout << std::endl;
 }
 
 void processStatsCommand() {
@@ -365,7 +373,23 @@ void processTaskCommand(std::string token) {
     if(token.size() == 0) {
         std::cout << "You have: ";
         if(!mySchedule->getTask().compare("")) {
-            std::cout << "Open";
+            std::cout << "Open" << std::endl;
+            std::cout << "Right now you can:";
+            for(auto a : mySchedule->getAllowableActivitiesAtCurrentTime()) {
+                std::cout << " " << a << ",";
+            }
+            std::cout << std::endl;
+            for(auto a : mySchedule->getAllowableActivitiesAtCurrentTime()) {
+                std::cout << "\tYou can " << a << " at : ";
+                for(auto l : activitiesActions[a]) {
+                    std::cout << " " << l << ",";
+                }
+                std::cout << std::endl;
+            }
+            std::cout << "Here, you can:";
+            for(auto a : player->getCurrentLocation().getAllowableActivities()) {
+                std::cout << " " << a << ",";
+            }
         } else {
             std::cout << mySchedule->getTask();
         }
@@ -391,13 +415,31 @@ void processTaskCommand(std::string token) {
         }
     }
 
-    if((!mySchedule->getTask().compare("")) && token.compare("")) {
-        if((!token.compare("study")) && player->getCurrentLocation().isAllowed(token)) {
-            std::cout << "You chose to " << token << std::endl;
-            mySchedule->advanceTime();
-        } else {
-            std::cout << "Error: activity doesn't exist or isn't allowed at this location" << std::endl;
+    if((!mySchedule->getTask().compare("")) && token.compare("")) { //TODO improve performance of this. We don't need to check if allowed at this time twice
+        //token = socialize - the activity they want to do
+        std::vector<std::string> allowedActivitiesNow = mySchedule->getAllowableActivitiesAtCurrentTime();
+        for(auto activity : allowedActivitiesNow) {
+            if(!activity.compare(token)) {
+
+                if(player->getCurrentLocation().isAllowed(token) && mySchedule->isAllowed(token)) {
+                    std::cout << "You chose to " << token << std::endl;
+                    mySchedule->advanceTime();
+                    return;
+                } else {
+                    std::cout << token << " is not allowed at this time or location" << std::endl;
+                    return;
+                }
+
+            }
         }
+        //token not found
+        std::cout << token << " is not allowed at this time. Select another activity" << std::endl;
+//        if((!token.compare("study")) && player->getCurrentLocation().isAllowed(token)) {
+//            std::cout << "You chose to " << token << std::endl;
+//            mySchedule->advanceTime();
+//        } else {
+//            std::cout << "Error: activity doesn't exist or isn't allowed at this location" << std::endl;
+//        }
     }
 
 

@@ -46,6 +46,7 @@ private:
     int time;
     std::map<int, std::string> days;
     std::map<int, std::string> times;
+    std::map<int, std::vector<std::string>> allowableActivities;
 public:
     Schedule(std::string name);
     void createSchedule(int grades, int sleep, int work, int social);
@@ -56,6 +57,8 @@ public:
     void getCurrentTime();
     std::string getTask();
     void advanceTime();
+    std::vector<std::string> getAllowableActivitiesAtCurrentTime();
+    bool isAllowed(std::string);
 };
 
 
