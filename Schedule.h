@@ -56,6 +56,9 @@ public:
     void getCurrentDay();
     void getCurrentTime();
     bool isNight();
+    bool hasClass();
+    bool hasWork();
+    bool hasFreetime();
     std::string getTask();
     void advanceTime();
     std::vector<std::string> getAllowableActivitiesAtCurrentTime();

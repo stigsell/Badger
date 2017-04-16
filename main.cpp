@@ -456,6 +456,23 @@ void processHelpCommand() {
     std::cout << "task <activity> - Completes the specified task and advances time" << std::endl;
     std::cout << "quit - Quits the game" << std::endl;
     std::cout << std::endl;
+    if(mySchedule->hasClass()) {
+        if(!player->getCurrentLocation().getDisplayName().compare(player->getClassLocation())) {
+            std::cout << "You have class right now. Enter \"task class\" to enter the classrooom" << std::endl;
+        } else {
+            std::cout << "You have class right now. Move to " << player->getClassLocation() << std::endl;
+        }
+    } else if(mySchedule->hasWork()) {
+        if(!player->getCurrentLocation().getDisplayName().compare("Union South")) {
+            std::cout << "You have work right now. Enter \"task work\" to start work" <<std::endl;
+        } else {
+            std::cout << "You have work right now. Move to Union South" <<std::endl;
+        }
+
+
+    } else {
+        std::cout << "You have free time right now. Enter \"task\" to see what you can do at this time and location" << std::endl;
+    }
 }
 
 void processQuitCommand() {

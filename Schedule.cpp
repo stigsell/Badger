@@ -92,6 +92,16 @@ void Schedule::freeTime() {
 
 }
 
+bool Schedule::hasClass() {
+    return (!schedule[time][day].compare("Class"));
+}
+bool Schedule::hasWork() {
+    return (!schedule[time][day].compare("Work"));
+}
+bool Schedule::hasFreetime() {
+    return (!schedule[time][day].compare(""));
+}
+
 void Schedule::getCurrentDay() {
     std::cout << "Current day: " << days[day] << std::endl;
 }

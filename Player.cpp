@@ -81,6 +81,12 @@ void Player::printStats() {
     std::cout << "Major: " << major << std::endl;
     std::cout << "Work location: Union South" << std::endl;
     std::cout << "Home: " << home << std::endl;
+    std::cout << "Class location: " << getClassLocation() << std::endl;
+}
+Location Player::getCurrentLocation() {
+    return currentLocation;
+}
+std::string Player::getClassLocation() {
     std::string classLocation;
     if(!major.compare("business")) {
         classLocation = "Grainger Hall";
@@ -91,10 +97,7 @@ void Player::printStats() {
     } else { //engineering
         classLocation = "Engineering Hall";
     }
-    std::cout << "Class location: " << classLocation << std::endl;
-}
-Location Player::getCurrentLocation() {
-    return currentLocation;
+    return classLocation;
 }
 int Player::setCurrentLocation(Location loc) {
     std::vector<Location> adjacentToProposedMove = currentLocation.getAdjacentLocations();
