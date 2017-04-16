@@ -103,11 +103,14 @@ void Schedule::getCurrentTime() {
 std::string Schedule::getTask() {
     return schedule[time][day];
 }
+bool Schedule::isNight() {
+    return time == 4;
+}
 void Schedule::advanceTime() {
     if(time == 4) {
         if(day == 6) {
             std::cout << "Game over" << std::endl;
-        } else {
+        } else { //advance to new day
             time = 0;
             day++;
         }

@@ -69,6 +69,9 @@ std::string Player::getHome() {
 void Player::setHome(std::string playerHome) {
     home = playerHome;
 }
+void Player::goToHome(Location playerHome) {
+    currentLocation = playerHome;
+}
 void Player::printStats() {
     std::cout << "Sleep: " << getSleepAttribute() << std::endl;
     std::cout << "Work: " << getWorkAttribute() << std::endl;

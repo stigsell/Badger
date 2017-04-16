@@ -24,6 +24,7 @@ public:
     int getAge();
     std::string getHome();
     void setHome(std::string playerHome);
+    void goToHome(Location playerHome);
     std::string getMajor();
     double getBalance();
     void addMoney(double money);

@@ -288,16 +288,16 @@ void assignPlayerHome() {
             std::cin.ignore(10000, '\n');
         }
         if(decision == 1) {
-            playerHome = "Lakeshore";
+            playerHome = "lakeshore";
             validInput = true;
         } else if(decision == 2) {
-            playerHome = "The Hub";
+            playerHome = "the hub";
             validInput = true;
         } else if(decision == 3) {
-            playerHome = "Mifflin St.";
+            playerHome = "mifflin st.";
             validInput = true;
         } else if(decision == 4) {
-            playerHome = "Housing Near Camp Randall";
+            playerHome = "housing near camp randall";
             validInput = true;
         } else {
             std::cout << "Error: Enter '1', '2', '3', or '4'" << std::endl;
@@ -387,6 +387,10 @@ void processTaskCommand(std::string token) {
     if((!mySchedule->getTask().compare("Class"))  && (!token.compare("class"))) {
         if(!player->getCurrentLocation().getDisplayName().compare(classLocation)) {
             std::cout << "Thanks for coming to class!" << std::endl;
+            if(mySchedule->isNight()) {
+                player->goToHome(campus->getLocation(player->getHome()));
+                std::cout << "Now that the night's over, you are now at home" << std::endl;
+            }
             mySchedule->advanceTime();
             return; //exit function
         } else {
@@ -397,6 +401,10 @@ void processTaskCommand(std::string token) {
     if((!mySchedule->getTask().compare("Work"))  && (!token.compare("work"))) {
         if(!player->getCurrentLocation().getDisplayName().compare("Union South")) {
             std::cout << "Thanks for coming to work!" << std::endl;
+            if(mySchedule->isNight()) {
+                player->goToHome(campus->getLocation(player->getHome()));
+                std::cout << "Now that the night's over, you are now at home" << std::endl;
+            }
             mySchedule->advanceTime();
             return; //exit function
         } else {
@@ -412,6 +420,10 @@ void processTaskCommand(std::string token) {
 
                 if(player->getCurrentLocation().isAllowed(token) && mySchedule->isAllowed(token)) {
                     std::cout << "You chose to " << token << std::endl;
+                    if(mySchedule->isNight()) {
+                        player->goToHome(campus->getLocation(player->getHome()));
+                        std::cout << "Now that the night's over, you are now at home" << std::endl;
+                    }
                     mySchedule->advanceTime();
                     return;
                 } else {
