@@ -12,6 +12,7 @@ Schedule *mySchedule;
 static const int TOTAL_POINTS = 20;
 static const double BASE_STARTING_MONEY = 400;
 std::map<std::string, std::vector<std::string>> activitiesActions;
+std::string playerHome;
 
 void showWelcomeMessage() {
     std::cout << "Welcome to the game!" << std::endl;
@@ -46,51 +47,8 @@ void assignPlayerDetails() {
     } while (playerAge < 18);
     std::cout << "You're " << playerAge << " years old" << std::endl; //remove
 
-    //What you live in
-    bool playerLivesInHouse;
     bool validInput = true;
-    do {
-        char decision;
-        std::cout << "What's your living situation like? House or apartment? Enter 'H' for house or 'A' for apartment" << std::endl;
-        std::cin >> decision;
-        if(decision == 'A' || decision == 'a') {
-            playerLivesInHouse = false;
-            std::cout << "Apartment! Nice choice" << std::endl;
-            validInput = true;
-        } else if(decision == 'H' || decision == 'h') {
-            playerLivesInHouse = true;
-            std::cout << "House! Nice choice" << std::endl;
-            validInput = true;
-        } else {
-            std::cout << "Error: Enter 'H' or 'A'" << std::endl;
-            validInput = false;
-        }
-    } while (!validInput);
-
-    //Where you live
-    bool playerLivesInSoutheast;
-    //we can reuse the validInput boolean because at this point it must be true
-    do {
-        char decision;
-        std::cout << "Where do you live? Lakeshore or Southeast? Enter 'L' for Lakeshore or 'S' for Southeast" << std::endl;
-        std::cin >> decision;
-        if(decision == 'L' || decision == 'l') {
-            playerLivesInSoutheast = false;
-            std::cout << "Lakeshore! Nice choice" << std::endl;
-            validInput = true;
-        } else if(decision == 'S' || decision == 's') {
-            playerLivesInSoutheast = true;
-            std::cout << "Southeast! Nice choice" << std::endl;
-            validInput = true;
-        } else {
-            std::cout << "Error: Enter 'L' or 'S'" << std::endl;
-            validInput = false;
-        }
-    } while (!validInput);
-
-    //Major TODO fix bug where entering a non-integer (like a char) creates infinite loop
     std::string playerMajor;
-    //we can reuse the validInput boolean because at this point it must be true
     do {
         int decision;
         std::cout << "What's your major? Your choices are: business, science, CS, or engineering.  Enter '1' for business, '2' for science, '3' for CS, '4' for engineering" << std::endl;
@@ -122,7 +80,7 @@ void assignPlayerDetails() {
     std::cout << "You work as a cook at Union South. Whenever you have work you need to go to Union South" << std::endl;
 
     //Create Player object
-    player = new Player(playerName, playerAge, playerLivesInHouse, playerLivesInSoutheast, playerMajor, campus->getLocation("union south"));
+    player = new Player(playerName, playerAge, playerMajor, campus->getLocation("union south"));
 }
 
 void assignPlayerAttributes() {
@@ -317,6 +275,37 @@ void setUpLocationsGraph() {
 //        }
 //        std::cout << std::endl;
 //    }
+}
+void assignPlayerHome() {
+
+    bool validInput = true;
+    do {
+        int decision;
+        std::cout << "Where would you like to live? Enter '1' for Lakeshore, '2' for The Hub, '3' for Mifflin St., '4' for Housing Near Camp Randall" << std::endl;
+        while(!(std::cin >> decision)) {
+            std::cout << "Incorrect input. Please try again. ";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+        }
+        if(decision == 1) {
+            playerHome = "Lakeshore";
+            validInput = true;
+        } else if(decision == 2) {
+            playerHome = "The Hub";
+            validInput = true;
+        } else if(decision == 3) {
+            playerHome = "Mifflin St.";
+            validInput = true;
+        } else if(decision == 4) {
+            playerHome = "Housing Near Camp Randall";
+            validInput = true;
+        } else {
+            std::cout << "Error: Enter '1', '2', '3', or '4'" << std::endl;
+            validInput = false;
+        }
+    } while (!validInput);
+    std::cout << playerHome << "! Nice choice" << std::endl;
+    player->setHome(playerHome);
 }
 
 void processStatsCommand() {
@@ -514,6 +503,7 @@ void initializePlayer() {
 int main() {
     setUpLocationsGraph();
     initializePlayer();
+    assignPlayerHome();
     player->printStats();
     createSchedule();
     processUserCommands();

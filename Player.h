@@ -13,18 +13,17 @@ class Player {
 private:
     std::string name;
     int age;
-    bool playerLivesInHouse;
-    bool playerLivesInSoutheast;
     std::string major;
     double balance;
     int attributes[4]; //[sleep, work, grades, social]
     Location currentLocation;
+    std::string home;
 public:
-    Player(std::string name, int age, bool house, bool southeast, std::string major, Location startingLoc);
+    Player(std::string name, int age, std::string major, Location startingLoc);
     std::string getName();
     int getAge();
-    bool getLivingSituation();
-    bool getLivingLocation();
+    std::string getHome();
+    void setHome(std::string playerHome);
     std::string getMajor();
     double getBalance();
     void addMoney(double money);

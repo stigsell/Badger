@@ -5,8 +5,8 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(std::string name, int age, bool house, bool southeast, std::string major, Location startingLoc)
-             : name(name), age(age), playerLivesInHouse(house), playerLivesInSoutheast(southeast), major(major), currentLocation(startingLoc) {
+Player::Player(std::string name, int age, std::string major, Location startingLoc)
+             : name(name), age(age), major(major), currentLocation(startingLoc) {
     balance = 0.0;
     attributes[0] = 0;
     attributes[1] = 0;
@@ -21,12 +21,6 @@ int Player::getAge() {
     return age;
 }
 
-bool Player::getLivingSituation() {
-    return playerLivesInHouse;
-}
-bool Player::getLivingLocation() {
-    return playerLivesInSoutheast;
-}
 std::string Player::getMajor() {
     return major;
 }
@@ -69,6 +63,12 @@ void Player::changeSocialAttribute(int social) {
 int Player::getSocialAttribute() {
     return attributes[3];
 }
+std::string Player::getHome() {
+    return home;
+}
+void Player::setHome(std::string playerHome) {
+    home = playerHome;
+}
 void Player::printStats() {
     std::cout << "Sleep: " << getSleepAttribute() << std::endl;
     std::cout << "Work: " << getWorkAttribute() << std::endl;
@@ -77,6 +77,7 @@ void Player::printStats() {
     std::cout << "Bank balance: $" << getBalance() << std::endl;
     std::cout << "Major: " << major << std::endl;
     std::cout << "Work location: Union South" << std::endl;
+    std::cout << "Home: " << home << std::endl;
     std::string classLocation;
     if(!major.compare("business")) {
         classLocation = "Grainger Hall";
