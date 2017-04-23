@@ -55,9 +55,6 @@ void Schedule::createSchedule(int grades, int sleep, int work, int social) {
             }
         }
     }
-
-
-
 }
 
 void Schedule::printSchedule() {
@@ -84,20 +81,14 @@ void Schedule::printSchedule() {
     std::cout << "----------------------------------------------------------------------" << std::endl;
 }
 
-void Schedule::createConflicts() {
-
-}
-
-void Schedule::freeTime() {
-
-}
-
 bool Schedule::hasClass() {
     return (!schedule[time][day].compare("Class"));
 }
+
 bool Schedule::hasWork() {
     return (!schedule[time][day].compare("Work"));
 }
+
 bool Schedule::hasFreetime() {
     return (!schedule[time][day].compare(""));
 }
@@ -113,9 +104,11 @@ void Schedule::getCurrentTime() {
 std::string Schedule::getTask() {
     return schedule[time][day];
 }
+
 bool Schedule::isNight() {
     return time == 4;
 }
+
 void Schedule::advanceTime() {
     if(time == 4) {
         if(day == 6) {
@@ -129,9 +122,11 @@ void Schedule::advanceTime() {
     }
     getCurrentTime();
 }
+
 std::vector<std::string> Schedule::getAllowableActivitiesAtCurrentTime() {
     return allowableActivities[time];
 }
+
 bool Schedule::isAllowed(std::string activity) {
     for(auto a : allowableActivities[time]) {
         if(!activity.compare(a)) {
@@ -139,5 +134,4 @@ bool Schedule::isAllowed(std::string activity) {
         }
     }
     return false;
-    //TODO implement this function
 }

@@ -1,36 +1,36 @@
 #include <iostream>
 #include <stdlib.h>
+#include<limits>
 #include "Player.h"
 #include "Location.h"
 #include "Graph.h"
 #include "Schedule.h"
-#include<limits>
-
+//Global pointers
 Player *player;
 Graph *campus;
 Schedule *mySchedule;
+//Global variables
 static const int TOTAL_POINTS = 20;
 static const double BASE_STARTING_MONEY = 400;
 std::map<std::string, std::vector<std::string>> activitiesActions;
 std::string playerHome;
-
-void showWelcomeMessage() {
-    std::cout << "Welcome to the game!" << std::endl;
-}
-
+/*
+ * Creates the schedule for the player and prints it so the user sees it
+ */
 void createSchedule() {
-    mySchedule = new Schedule("A good schedule");
+    mySchedule = new Schedule("");
     mySchedule->createSchedule(player->getGradesAttribute(), player->getSleepAttribute(), player->getWorkAttribute(), player->getSocialAttribute());
     mySchedule->printSchedule();
 }
-
+/*
+ * Gets user input to create the player object
+ */
 void assignPlayerDetails() {
-
     //Name
     std::string playerName;
     std::cout << "What is your name? ";
     getline(std::cin, playerName);
-    std::cout << "Welcome, " << playerName << "! We're glad you're playing" << std::endl; //remove
+    std::cout << "Welcome, " << playerName << "! We're glad you're playing" << std::endl;
 
     //Age
     int playerAge;
@@ -44,9 +44,9 @@ void assignPlayerDetails() {
         if(playerAge < 18) {
             std::cout << "Error: Age must be greater than or equal to 18" << std::endl;
         }
-    } while (playerAge < 18);
+    } while(playerAge < 18);
     std::cout << "You're " << playerAge << " years old" << std::endl; //remove
-
+    //Major
     bool validInput = true;
     std::string playerMajor;
     do {
@@ -82,14 +82,17 @@ void assignPlayerDetails() {
     //Create Player object
     player = new Player(playerName, playerAge, playerMajor, campus->getLocation("union south"));
 }
-
+/*
+ * Assigns player attributes by getting user input
+ */
 void assignPlayerAttributes() {
     int pointsUsed = 0;
     std::cout << "Now's the time to assign attributes to your player." << std::endl;
     std::cout << "There are 4 attributes: sleep, work, grades, and social life" << std::endl;
     std::cout << "To start off the game, you have 20 attribute points to distribute among the 4 attributes" << std::endl;
     std::cout << "It's important to have a balance of attributes" << std::endl;
-    std::cout << "NOTE: Think hard about your decisions. These can't be changed later on." << std::endl;
+    std::cout << "These attributes will change throughout the game as you make decisions" << std::endl;
+
     //sleep
     int sleep;
     do {
@@ -129,6 +132,7 @@ void assignPlayerAttributes() {
 
     pointsUsed += work;
     std::cout << "You allocated " << work << " points to work. You have " << TOTAL_POINTS - pointsUsed << " left to allocate." << std::endl;
+
     //grades
     int grades;
     do {
@@ -148,6 +152,7 @@ void assignPlayerAttributes() {
 
     pointsUsed += grades;
     std::cout << "You allocated " << grades << " points to grades. You have " << TOTAL_POINTS - pointsUsed << " left to allocate." << std::endl;
+
     //social
     int social = TOTAL_POINTS - pointsUsed;
     std::cout << "You have " << TOTAL_POINTS - pointsUsed << " points left. They are all automatically allocated to social life." << std::endl;
@@ -156,9 +161,10 @@ void assignPlayerAttributes() {
     player->changeWorkAttribute(work);
     player->changeGradesAttribute(grades);
     player->changeSocialAttribute(social);
-
 }
-
+/*
+ * Gives the user a random amount of money. Adds $150 if their work score is 7 or higher
+ */
 void assignPlayerMoney() {
     srand(time(0)); //sets random seed
     double money = rand() % 100 + 1;
@@ -171,7 +177,9 @@ void assignPlayerMoney() {
         std::cout << "You now have $" << player->getBalance() << std::endl;
     }
 }
-
+/*
+ * Creates the graph that stores the locations of the game
+ */
 void setUpLocationsGraph() {
     campus = new Graph("UW-Madison"); //create graph
     //create locations
@@ -189,6 +197,7 @@ void setUpLocationsGraph() {
     Location dons("Gordon's Dining Hall", "gordon's dining hall", {"socialize", "eat out with friends"});
     Location mifflin("Mifflin St.", "mifflin st.", {"study", "relax", "socialize", "go out", "eat at home"});
     //add edges
+
     //lakeshore
     lakeshore.addEdge(eHall);
     lakeshore.addEdge(bascom);
@@ -258,6 +267,7 @@ void setUpLocationsGraph() {
     campus->addVertex(dons);
     campus->addVertex(mifflin);
 
+    //A map that maps an action with a list of places where that action can be performed
     activitiesActions["study"] = {"Lakeshore", "Engineering Hall", "Housing Near Camp Randall", "Union South", "Bascom Hill", "College Library", "CS Building", "Grainger Hall", "The Hub", "Mifflin St."};
     activitiesActions["relax"] = {"Lakeshore", "Housing Near Camp Randall", "The Hub", "Mifflin St.", "Bascom Hill"};
     activitiesActions["socialize"] = {"Lakeshore", "Housing Near Camp Randall", "Camp Randall", "Union South", "State Street", "The Hub", "Gordon's Dining Hall", "Mifflin St."};
@@ -265,19 +275,11 @@ void setUpLocationsGraph() {
     activitiesActions["eat at home"] = {"Lakeshore", "Housing Near Camp Randall", "The Hub", "Mifflin St."};
     activitiesActions["eat out with friends"] = {"Union South", "State Street", "Gordon's Dining Hall"};
     activitiesActions["stay in"] = {"Lakeshore", "Housing Near Camp Randall", "The Hub", "Mifflin St."};
-
-    //print all locations and their neighbors
-//    for(auto location : campus->getAllLocations()) {
-//        std::cout << location.getDisplayName() << "--> " << "\t";
-//        std::vector<Location> neighbors = location.getAdjacentLocations();
-//        for(auto n : neighbors) {
-//            std::cout << n.getDisplayName() << " , "; //TODO remove end comma (or come up with better way to display graph)
-//        }
-//        std::cout << std::endl;
-//    }
 }
+/*
+ * Gets user input to determine the player's home and update the player object with the player home
+ */
 void assignPlayerHome() {
-
     bool validInput = true;
     do {
         int decision;
@@ -306,19 +308,25 @@ void assignPlayerHome() {
     } while (!validInput);
     std::cout << playerHome << "! Nice choice" << std::endl;
     player->setHome(playerHome);
+    player->goToHome(campus->getLocation(playerHome));
 }
-
+/*
+ * Prints the player stats
+ */
 void processStatsCommand() {
     player->printStats();
     mySchedule->printSchedule();
 }
-
+/*
+ * Prints the current day and time
+ */
 void processNowCommand() {
     mySchedule->getCurrentDay();
     mySchedule->getCurrentTime();
 }
-
-
+/*
+ * Prints the current location and the adjacent locations
+ */
 void processNearmeCommand() {
     std::cout << "You are at: " << player->getCurrentLocation().getDisplayName() << std::endl;
     std::cout << "From here, you can move to: " << std::endl;
@@ -327,7 +335,9 @@ void processNearmeCommand() {
         std::cout << "\t" << l.getDisplayName() << std::endl;
     }
 }
-
+/*
+ * Moves the player to the location specified by token
+ */
 void processMoveCommand(std::string token) {
     if(campus->isValidLocation(token)) {
         Location loc = campus->getLocation(token);
@@ -346,8 +356,11 @@ void processMoveCommand(std::string token) {
         std::cout << "Error: not a valid location. Make sure you typed it exactly as it appears on your screen " << std::endl;
     }
 }
-
+/*
+ * Performs the task specified by token. If token is blank, print a list of available actions based on time and location
+ */
 void processTaskCommand(std::string token) {
+    //Get class location
     std::string classLocation;
     if(!player->getMajor().compare("business")) {
         classLocation = "Grainger Hall";
@@ -358,7 +371,7 @@ void processTaskCommand(std::string token) {
     } else { //engineering
         classLocation = "Engineering Hall";
     }
-
+    //Blank token. Print available actions
     if(token.size() == 0) {
         std::cout << "You have: ";
         if(!mySchedule->getTask().compare("")) {
@@ -384,6 +397,7 @@ void processTaskCommand(std::string token) {
         }
         std::cout << std::endl;
     }
+    //Class
     if((!mySchedule->getTask().compare("Class"))  && (!token.compare("class"))) {
         if(!player->getCurrentLocation().getDisplayName().compare(classLocation)) {
             std::cout << "Thanks for coming to class!" << std::endl;
@@ -398,7 +412,7 @@ void processTaskCommand(std::string token) {
             std::cout << "You're not in your class location. Move to " << classLocation << std::endl;
         }
     }
-
+    //Work
     if((!mySchedule->getTask().compare("Work"))  && (!token.compare("work"))) {
         if(!player->getCurrentLocation().getDisplayName().compare("Union South")) {
             std::cout << "Thanks for coming to work!" << std::endl;
@@ -414,7 +428,7 @@ void processTaskCommand(std::string token) {
             std::cout << "You're not in your work location. Move to Union South" << std::endl;
         }
     }
-
+    //User has free time and specified a token
     if((!mySchedule->getTask().compare("")) && token.compare("")) { //TODO improve performance of this. We don't need to check if allowed at this time twice
         //token = socialize - the activity they want to do
         std::vector<std::string> allowedActivitiesNow = mySchedule->getAllowableActivitiesAtCurrentTime();
@@ -453,17 +467,11 @@ void processTaskCommand(std::string token) {
         }
         //token not found
         std::cout << token << " is not allowed at this time. Select another activity" << std::endl;
-//        if((!token.compare("study")) && player->getCurrentLocation().isAllowed(token)) {
-//            std::cout << "You chose to " << token << std::endl;
-//            mySchedule->advanceTime();
-//        } else {
-//            std::cout << "Error: activity doesn't exist or isn't allowed at this location" << std::endl;
-//        }
     }
-
-
 }
-
+/*
+ * Prints a list of commands available in the game
+ */
 void processHelpCommand() {
     std::cout << std::endl;
     std::cout << "stats - Prints user's current attributes, major, bank balance, work location, class location, and schedule" << std::endl;
@@ -474,6 +482,7 @@ void processHelpCommand() {
     std::cout << "task <activity> - Completes the specified task and advances time" << std::endl;
     std::cout << "quit - Quits the game" << std::endl;
     std::cout << std::endl;
+    //Wizard. Helps the player by giving them hints on what to do
     if(mySchedule->hasClass()) {
         if(!player->getCurrentLocation().getDisplayName().compare(player->getClassLocation())) {
             std::cout << "You have class right now. Enter \"task class\" to enter the classrooom" << std::endl;
@@ -486,19 +495,20 @@ void processHelpCommand() {
         } else {
             std::cout << "You have work right now. Move to Union South" <<std::endl;
         }
-
-
     } else {
         std::cout << "You have free time right now. Enter \"task\" to see what you can do at this time and location" << std::endl;
     }
 }
-
+/*
+ * Quits the game
+ */
 void processQuitCommand() {
     std::cout << "Thanks for playing!" << std::endl;
     exit(0);
 }
-
-
+/*
+ * Runs infinitely (until program is quit) to get user input and call the approporiate method based on the user command
+ */
 static void processUserCommands() {
     std::cin.ignore();
     std::string command = "";
@@ -539,14 +549,18 @@ static void processUserCommands() {
         }
     } while(command.compare("quit"));
 }
-
+/*
+ * Initialize player object
+ */
 void initializePlayer() {
-    showWelcomeMessage();
+    std::cout << "Welcome to A Week In The Life of a Badger!" << std::endl;
     assignPlayerDetails();
     assignPlayerAttributes();
     assignPlayerMoney();
 }
-
+/*
+ * Main method. Controls game execution by setting up the game and then calling processUserCommands()
+ */
 int main() {
     setUpLocationsGraph();
     initializePlayer();

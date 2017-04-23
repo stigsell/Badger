@@ -1,10 +1,5 @@
-//
-// Created by Nick Stigsell on 3/29/17.
-//
-
 #ifndef BADGER_SCHEDULE_H
 #define BADGER_SCHEDULE_H
-
 
 #include <string>
 #include <vector>
@@ -48,23 +43,58 @@ private:
     std::map<int, std::string> times;
     std::map<int, std::vector<std::string>> allowableActivities;
 public:
+    /*
+     * Constructs a Schedule object
+     */
     Schedule(std::string name);
+    /*
+     * Assigns the user schedule based on the specified attributes
+     */
     void createSchedule(int grades, int sleep, int work, int social);
+    /*
+     * Prints the user's schedule
+     */
     void printSchedule();
-    void createConflicts();
-    void freeTime();
+    /*
+     * Prints the current day
+     */
     void getCurrentDay();
+    /*
+     * Prints the current time
+     */
     void getCurrentTime();
+    /*
+     * Checks if it is night right now
+     */
     bool isNight();
+    /*
+     * Checks if the user has class right now
+     */
     bool hasClass();
+    /*
+     * Checks if the user has work right now
+     */
     bool hasWork();
+    /*
+     * Checks if the user has free time right now
+     */
     bool hasFreetime();
+    /*
+     * Returns the current task
+     */
     std::string getTask();
+    /*
+     * Advances to the next time frame
+     */
     void advanceTime();
+    /*
+     * Returns a vector of all allowable activities at the current time
+     */
     std::vector<std::string> getAllowableActivitiesAtCurrentTime();
-    bool isAllowed(std::string);
+    /*
+     * Checks if the specified activity is allowed at the current time
+     */
+    bool isAllowed(std::string activity);
 };
 
-
 #endif //BADGER_SCHEDULE_H
-

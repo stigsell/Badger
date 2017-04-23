@@ -1,7 +1,3 @@
-//
-// Created by Nick Stigsell on 3/29/17.
-//
-
 #include "Player.h"
 #include <iostream>
 
@@ -14,9 +10,11 @@ Player::Player(std::string name, int age, std::string major, Location startingLo
     attributes[3] = 0;
 
 }
+
 std::string Player::getName() {
     return name;
 }
+
 int Player::getAge() {
     return age;
 }
@@ -24,12 +22,15 @@ int Player::getAge() {
 std::string Player::getMajor() {
     return major;
 }
+
 double Player::getBalance() {
     return balance;
 }
+
 void Player::addMoney(double money) {
     balance += money;
 }
+
 int Player::subtractMoney(double money) {
     if(balance - money > 0) {
         balance -= money;
@@ -39,39 +40,50 @@ int Player::subtractMoney(double money) {
     }
 
 }
+
 void Player::changeSleepAttribute(int sleep) {
     attributes[0] += sleep;
 }
+
 int Player::getSleepAttribute() {
     return attributes[0];
 }
+
 void Player::changeWorkAttribute(int work) {
     attributes[1] += work;
 }
+
 int Player::getWorkAttribute() {
     return attributes[1];
 }
+
 void Player::changeGradesAttribute(int grades) {
     attributes[2] += grades;
 }
 int Player::getGradesAttribute() {
     return attributes[2];
 }
+
 void Player::changeSocialAttribute(int social) {
     attributes[3] += social;
 }
+
 int Player::getSocialAttribute() {
     return attributes[3];
 }
+
 std::string Player::getHome() {
     return home;
 }
+
 void Player::setHome(std::string playerHome) {
     home = playerHome;
 }
+
 void Player::goToHome(Location playerHome) {
     currentLocation = playerHome;
 }
+
 void Player::printStats() {
     std::cout << "Sleep: " << getSleepAttribute() << std::endl;
     std::cout << "Work: " << getWorkAttribute() << std::endl;
@@ -83,9 +95,11 @@ void Player::printStats() {
     std::cout << "Home: " << home << std::endl;
     std::cout << "Class location: " << getClassLocation() << std::endl;
 }
+
 Location Player::getCurrentLocation() {
     return currentLocation;
 }
+
 std::string Player::getClassLocation() {
     std::string classLocation;
     if(!major.compare("business")) {
@@ -99,6 +113,7 @@ std::string Player::getClassLocation() {
     }
     return classLocation;
 }
+
 int Player::setCurrentLocation(Location loc) {
     std::vector<Location> adjacentToProposedMove = currentLocation.getAdjacentLocations();
     for(auto l : adjacentToProposedMove) {
