@@ -180,7 +180,7 @@ void setUpLocationsGraph() {
     Location crHousing("Housing Near Camp Randall", "housing near camp randall", {"study", "relax", "socialize", "eat at home"});
     Location cRandall("Camp Randall", "camp randall", {"socialize", "go out"});
     Location uSouth("Union South", "union south", {"study", "socialize", "eat out with friends"});
-    Location bascom("Bascom Hill", "bascom hill", {"study"});
+    Location bascom("Bascom Hill", "bascom hill", {"study", "relax"});
     Location collegeLib("College Library", "college library", {"study"});
     Location csBuilding("CS Building", "cs building", {"study"});
     Location grainger("Grainger Hall", "grainger hall", {"study"});
@@ -259,12 +259,12 @@ void setUpLocationsGraph() {
     campus->addVertex(mifflin);
 
     activitiesActions["study"] = {"Lakeshore", "Engineering Hall", "Housing Near Camp Randall", "Union South", "Bascom Hill", "College Library", "CS Building", "Grainger Hall", "The Hub", "Mifflin St."};
-    activitiesActions["relax"] = {"Lakeshore", "Housing Near Camp Randall", "The Hub", "Mifflin St."};
+    activitiesActions["relax"] = {"Lakeshore", "Housing Near Camp Randall", "The Hub", "Mifflin St.", "Bascom Hill"};
     activitiesActions["socialize"] = {"Lakeshore", "Housing Near Camp Randall", "Camp Randall", "Union South", "State Street", "The Hub", "Gordon's Dining Hall", "Mifflin St."};
     activitiesActions["go out"] = {"Lakeshore", "Housing Near Camp Randall", "State Street", "The Hub", "Mifflin St."};
     activitiesActions["eat at home"] = {"Lakeshore", "Housing Near Camp Randall", "The Hub", "Mifflin St."};
     activitiesActions["eat out with friends"] = {"Union South", "State Street", "Gordon's Dining Hall"};
-
+    activitiesActions["stay in"] = {"Lakeshore", "Housing Near Camp Randall", "The Hub", "Mifflin St."};
 
     //print all locations and their neighbors
 //    for(auto location : campus->getAllLocations()) {
@@ -387,6 +387,7 @@ void processTaskCommand(std::string token) {
     if((!mySchedule->getTask().compare("Class"))  && (!token.compare("class"))) {
         if(!player->getCurrentLocation().getDisplayName().compare(classLocation)) {
             std::cout << "Thanks for coming to class!" << std::endl;
+            player->changeGradesAttribute(1);
             if(mySchedule->isNight()) {
                 player->goToHome(campus->getLocation(player->getHome()));
                 std::cout << "Now that the night's over, you are now at home" << std::endl;
@@ -401,6 +402,8 @@ void processTaskCommand(std::string token) {
     if((!mySchedule->getTask().compare("Work"))  && (!token.compare("work"))) {
         if(!player->getCurrentLocation().getDisplayName().compare("Union South")) {
             std::cout << "Thanks for coming to work!" << std::endl;
+            player->changeWorkAttribute(1);
+            player->addMoney(40.00);
             if(mySchedule->isNight()) {
                 player->goToHome(campus->getLocation(player->getHome()));
                 std::cout << "Now that the night's over, you are now at home" << std::endl;
@@ -420,6 +423,21 @@ void processTaskCommand(std::string token) {
 
                 if(player->getCurrentLocation().isAllowed(token) && mySchedule->isAllowed(token)) {
                     std::cout << "You chose to " << token << std::endl;
+                    if(!token.compare("relax")) {
+                        player->changeSleepAttribute(1);
+                    } else if(!token.compare("study")) {
+                        player->changeGradesAttribute(1);
+                    } else if(!token.compare("socialize")) {
+                        player->changeSocialAttribute(1);
+                    } else if(!token.compare("go out")) {
+                        player->changeSocialAttribute(1);
+                        player->subtractMoney(20.00);
+                    } else if(!token.compare("eat out with friends")) {
+                        player->changeSocialAttribute(1);
+                        player->subtractMoney(10.00);
+                    } else if (!token.compare("stay in")) {
+                        player->changeSleepAttribute(1);
+                    }
                     if(mySchedule->isNight()) {
                         player->goToHome(campus->getLocation(player->getHome()));
                         std::cout << "Now that the night's over, you are now at home" << std::endl;
