@@ -51,7 +51,7 @@ void assignPlayerDetails() {
     std::string playerMajor;
     do {
         int decision;
-        std::cout << "What's your major? Your choices are: business, science, CS, or engineering.  Enter '1' for business, '2' for science, '3' for CS, '4' for engineering" << std::endl;
+        std::cout << "What's your major? Your choices are: business, science, CS, or engineering.  Enter '1' for business, '2' for science, '3' for CS, '4' for engineering ";
         while(!(std::cin >> decision)) {
             std::cout << "Incorrect input. Please try again. ";
             std::cin.clear();
@@ -96,7 +96,7 @@ void assignPlayerAttributes() {
     //sleep
     int sleep;
     do {
-        std::cout << "How many points would you like to allocate to sleep? You have " << TOTAL_POINTS - pointsUsed << " points left. " << std::endl;
+        std::cout << "How many points would you like to allocate to sleep? You have " << TOTAL_POINTS - pointsUsed << " points left. ";
         while(!(std::cin >> sleep)) {
             std::cout << "Incorrect input. Please try again. ";
             std::cin.clear();
@@ -116,7 +116,7 @@ void assignPlayerAttributes() {
     //work
     int work;
     do {
-        std::cout << "How many points would you like to allocate to work? You have " << TOTAL_POINTS - pointsUsed << " points left. " << std::endl;
+        std::cout << "How many points would you like to allocate to work? You have " << TOTAL_POINTS - pointsUsed << " points left. ";
         while(!(std::cin >> work)) {
             std::cout << "Incorrect input. Please try again. ";
             std::cin.clear();
@@ -136,7 +136,7 @@ void assignPlayerAttributes() {
     //grades
     int grades;
     do {
-        std::cout << "How many points would you like to allocate to grades? You have " << TOTAL_POINTS - pointsUsed << " points left. " << std::endl;
+        std::cout << "How many points would you like to allocate to grades? You have " << TOTAL_POINTS - pointsUsed << " points left. ";
         while(!(std::cin >> grades)) {
             std::cout << "Incorrect input. Please try again. ";
             std::cin.clear();
@@ -283,7 +283,7 @@ void assignPlayerHome() {
     bool validInput = true;
     do {
         int decision;
-        std::cout << "Where would you like to live? Enter '1' for Lakeshore, '2' for The Hub, '3' for Mifflin St., '4' for Housing Near Camp Randall" << std::endl;
+        std::cout << "Where would you like to live? Enter '1' for Lakeshore, '2' for The Hub, '3' for Mifflin St., '4' for Housing Near Camp Randall ";
         while(!(std::cin >> decision)) {
             std::cout << "Incorrect input. Please try again. ";
             std::cin.clear();
